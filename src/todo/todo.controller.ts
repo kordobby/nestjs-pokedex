@@ -1,3 +1,4 @@
+import { TodoService } from './todo.service';
 import { UpdateTodoDto } from './../dto/dto';
 import {
   Body,
@@ -10,10 +11,9 @@ import {
   Query,
 } from '@nestjs/common';
 import { CreateTodoDto, ListAllTodos } from 'src/dto/dto';
+import { Todo } from 'src/interfaces/todo.interface';
 
-@Controller('todo')
-export class TodoController {
-  /*---------------------------------------------*
+/*---------------------------------------------*
     BASIC API STRUCTURE :: EXAMPLE
     - findAll : 전체 데이터 목록 조회
     - findOne : 데이터 상세 조회
@@ -22,9 +22,16 @@ export class TodoController {
     - remove : 데이터 삭제
   *---------------------------------------------*/
 
+@Controller('todo')
+export class TodoController {
+  // TodoService 는 constructor 를 통해 주입됨
+  // private을 사용하면 선언과 초기화가 동시에 이루어짐
+  constructor(private todoService: TodoService) {}
+
   @Post()
-  create(@Body() createTodoDto: CreateTodoDto) {
-    return 'This action adds Todo List';
+  async create(@Body() createTodoDto: CreateTodoDto) {
+    // return 'This action adds Todo List';
+    this.todoService.create(createTodoDto);
   }
 
   @Get()
